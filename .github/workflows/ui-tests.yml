@@ -1,0 +1,21 @@
+name: 'UI Tests'
+
+on: push
+
+jobs:
+  interaction-and-accessibility:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 17.x, 18.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: yarn
+      - name: Build Storybook
+        run: yarn build-storybook --quiet

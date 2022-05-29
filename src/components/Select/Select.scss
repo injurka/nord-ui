@@ -1,0 +1,108 @@
+$background-hover: #384f67;
+$background: #343a40;
+
+$color-highlight: #3898dd;
+$color: #bdc6cf;
+
+$select-content-height: 35px;
+
+$select-width: 500px;
+
+.select {
+  position: relative;
+  max-width: $select-width;
+}
+
+.select-content {
+  width: 100%;
+  height: $select-content-height;
+
+  &__input {
+    padding: 5px 10px;
+    height: 100%;
+    color: $color;
+    background-color: $background;
+    border-radius: 5px;
+    width: 100%;
+    border: none;
+    outline: none;
+  }
+}
+
+.select-list {
+  position: absolute;
+  top: calc($select-content-height + 5px);
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 100%;
+    width: 100%;
+    max-height: calc(100vh / 3);
+    height: 100%;
+    border-radius: 5px;
+    background-color: $background;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 100%;
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background-color: $color-highlight;
+      box-shadow: inset 0 0 5px $background-hover;
+    }
+
+    &::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 1px transparent;
+      border-radius: 10px;
+      background-color: transparent;
+    }
+  }
+
+  &__options-transition-enter {
+    opacity: 0;
+  }
+
+  &__options-transition-enter-active {
+    opacity: 1;
+    transition: opacity 0.25s;
+  }
+
+  &__options-transition-exit {
+    opacity: 1;
+  }
+
+  &__options-transition-exit-active {
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  &__options {
+    .option-item {
+      cursor: pointer;
+      padding: 5px 10px;
+      list-style-type: none;
+
+      &__text {
+        font-weight: 400;
+        color: $color;
+
+        &_highlight {
+          font-weight: 500;
+          color: $color-highlight;
+        }
+      }
+
+      &:hover {
+        background-color: $background-hover;
+      }
+    }
+  }
+}
