@@ -7,7 +7,7 @@
       {
         "singleQuote": true,
         "trailingComma": "none",
-        "printWidth": 120,
+        "printWidth": 100,
         "tabWidth": 2,
         "semi": true,
         "bracketSameLine": true,
@@ -98,12 +98,14 @@
             "aspects": ["invalidHref", "preferButton"]
           }
         ],
+        "jsx-a11y/click-events-have-key-events": "off",
 
         "react/react-in-jsx-scope": "off",
         "react/require-default-props": "off",
         "react/jsx-props-no-spreading": "off",
         "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
         "react/display-name": ["off", { "ignoreTranspilerName": true }],
+        "react/function-component-definition": "off",
 
         "jsx-a11y/no-noninteractive-element-interactions": "off",
         // "jsx-a11y/click-events-have-key-events": "off",
@@ -113,7 +115,7 @@
           {
             "singleQuote": true,
             "trailingComma": "none",
-            "printWidth": 120,
+            "printWidth": 100,
             "tabWidth": 2,
             "semi": true,
             "bracketSameLine": true,

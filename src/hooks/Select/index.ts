@@ -1,18 +1,40 @@
 import type React from 'react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { SelectOption } from '#C/Select';
 
 export const useSelect = (options: SelectOption[]) => {
-  const [filteredOptions, setFilteredOptions] = useState<SelectOption[]>(options);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [value, setValue] = useState<string>('');
 
-  const handleClickOption = (option: SelectOption) => () => {
-    console.log('handleClickOption > ', option);
+  const filteredOptions = useMemo(() => {
+    return options.filter((x) => x.value.toLowerCase().includes(value.toLowerCase(), 0));
+  }, [value, options]);
+
+  console.log('f', filteredOptions);
+
+  const handleChangeOption = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
   };
 
-  const handleKeyPress = (e: React.DetailedHTMLProps<React.LiHTMLAttributes<HTMLLIElement>, HTMLLIElement>) => {
+  const handleClickOption = (option: SelectOption) => () => {
+    setValue(option.value);
+    setIsOpen(false);
+  };
+
+  const handleKeyPress = (
+    e: React.DetailedHTMLProps<React.LiHTMLAttributes<HTMLDivElement>, HTMLDivElement>
+  ) => {
+    console.log('handleKeyPressEnter');
     if (e.key === 'Enter') console.log('handleKeyPressEnter');
   };
 
-  return { filteredOptions, isOpen, setIsOpen, handleClickOption, handleKeyPress };
+  return {
+    value,
+    filteredOptions,
+    isOpen,
+    setIsOpen,
+    handleClickOption,
+    handleChangeOption,
+    handleKeyPress
+  };
 };

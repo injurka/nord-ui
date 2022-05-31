@@ -1,8 +1,10 @@
 @use 'sass:color';
 
-$font-family-sans-serif: -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, 'Helvetica Neue', arial, 'Noto Sans',
-  sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !default;
-$font-family-monospace: sfmono-regular, menlo, monaco, consolas, 'Liberation Mono', 'Courier New', monospace !default;
+$font-family-sans-serif: -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, 'Helvetica Neue',
+  arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+  'Noto Color Emoji' !default;
+$font-family-monospace: sfmono-regular, menlo, monaco, consolas, 'Liberation Mono', 'Courier New',
+  monospace !default;
 $font-family-base: $font-family-sans-serif !default;
 $font-size-base: 1rem !default;
 $font-size-lg: $font-size-base * 1.25 !default;
@@ -147,7 +149,8 @@ $btn-font-size-lg: $font-size-lg !default;
 $btn-border-width: $border-width !default;
 
 // $btn-box-shadow: inset 0 1px 0 rgba($white, 0.15), 0 1px 1px rgba($black, 0.075) !default;
-$btn-box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%) !default;
+$btn-box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%),
+  0 1px 5px 0 rgb(0 0 0 / 12%) !default;
 $btn-disabled-opacity: 0.65 !default;
 $btn-link-color: $link-color !default;
 $btn-link-hover-color: $link-hover-color !default;
@@ -157,8 +160,8 @@ $btn-link-disabled-color: $grey-600 !default;
 $btn-border-radius: $border-radius !default;
 $btn-border-radius-lg: $border-radius-lg !default;
 $btn-border-radius-sm: $border-radius-sm !default;
-$btn-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
-  box-shadow 0.15s ease-in-out !default;
+$btn-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+  border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !default;
 
 // menu
 $menu-border-width: $border-width !default;

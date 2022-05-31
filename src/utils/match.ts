@@ -32,7 +32,9 @@ const match = (text: string, query: string, options?: Subject) => {
     requireMatchAll: false
   });
 
-  const cleanedTextArray = Array.from(text).map((x) => x.normalize('NFD').replace(removeDiacritics, ''));
+  const cleanedTextArray = Array.from(text).map((x) =>
+    x.normalize('NFD').replace(removeDiacritics, '')
+  );
   let cleanedText = cleanedTextArray.join('');
   const cleanedQuery = query.normalize('NFD').replace(removeDiacritics, '');
 
@@ -71,7 +73,9 @@ const match = (text: string, query: string, options?: Subject) => {
         }
 
         cleanedText =
-          cleanedText.slice(0, index) + new Array(wordLen + 1).join(' ') + cleanedText.slice(index + wordLen);
+          cleanedText.slice(0, index) +
+          new Array(wordLen + 1).join(' ') +
+          cleanedText.slice(index + wordLen);
 
         if (!extendedOptions.findAllOccurrences) {
           break;
