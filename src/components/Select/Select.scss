@@ -1,11 +1,14 @@
-$background-hover: #384f67;
-$background: #343a40;
+@use 'sass:color';
 
-$color-highlight: #3898dd;
-$color: #bdc6cf;
-
+$background: #eee;
+$background-hover: #ddd;
+$background-highlight: #c7e6f9;
+$box-shadow: 0 0 15px rgb(0 0 0 / 15%);
+$border-active-input: #7ab3dd;
+$border-input: #cecece;
+$color-highlight: #7e7af5;
+$color: #353535;
 $select-content-height: 35px;
-
 $select-width: 500px;
 
 .select {
@@ -16,15 +19,73 @@ $select-width: 500px;
 .select-content {
   width: 100%;
   height: $select-content-height;
+  overflow: hidden;
+  background-color: $background;
+  border: 1px solid $border-input;
+  border-radius: 5px;
+
+  &__placeholder {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    text-align: center;
+    transition: color 0.5s ease-out;
+  }
+
+  &.open {
+    border: 1px solid $border-active-input;
+
+    .select-selector {
+      &__placeholder {
+        color: color.adjust($color, $lightness: 25%);
+        transition: color 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+      }
+    }
+  }
+}
+
+.select-chevron {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 30px;
+  height: 100%;
+  transition: transform 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+
+  svg {
+    fill: $color;
+  }
+
+  &.open {
+    transition: transform 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transform: rotate(180deg);
+  }
+}
+
+.select-selector {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding-left: 15px;
+
+  &__placeholder {
+    height: 100%;
+    line-height: 33px;
+  }
 
   &__input {
-    padding: 5px 10px;
-    height: 100%;
-    color: $color;
-    background-color: $background;
-    border-radius: 5px;
+    position: absolute;
     width: 100%;
+    height: 100%;
+    padding: 0;
+    color: $color;
+    background-color: transparent;
     border: none;
+    border-radius: 5px;
     outline: none;
   }
 }
@@ -35,16 +96,16 @@ $select-width: 500px;
   left: 0;
   width: 100%;
   overflow: hidden;
+  border-radius: 5px;
+  box-shadow: $box-shadow;
 
   &__wrapper {
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
-    height: 100%;
     width: 100%;
-    max-height: calc(100vh / 3);
     height: 100%;
-    border-radius: 5px;
+    max-height: calc(100vh / 3);
+    overflow-y: auto;
     background-color: $background;
 
     &::-webkit-scrollbar {
@@ -54,15 +115,15 @@ $select-width: 500px;
     }
 
     &::-webkit-scrollbar-thumb {
-      border-radius: 10px;
       background-color: $color-highlight;
+      border-radius: 10px;
       box-shadow: inset 0 0 5px $background-hover;
     }
 
     &::-webkit-scrollbar-track {
-      box-shadow: inset 0 0 1px transparent;
-      border-radius: 10px;
       background-color: transparent;
+      border-radius: 10px;
+      box-shadow: inset 0 0 1px transparent;
     }
   }
 
@@ -86,22 +147,30 @@ $select-width: 500px;
 
   &__options {
     .option-item {
-      cursor: pointer;
       padding: 5px 10px;
       list-style-type: none;
+      cursor: pointer;
 
       &__text {
         font-weight: 400;
         color: $color;
 
         &_highlight {
-          font-weight: 500;
+          font-weight: 700;
           color: $color-highlight;
         }
       }
 
       &:hover {
         background-color: $background-hover;
+      }
+
+      &.hovered {
+        background-color: $background-hover;
+      }
+
+      &.selected {
+        background-color: $background-highlight;
       }
     }
   }

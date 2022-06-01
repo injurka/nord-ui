@@ -1,4 +1,4 @@
-const parse = (text: string, matches: number[][]) => {
+export const parse = (text: string, matches: number[][]) => {
   const result = [];
 
   if (matches.length === 0) {
@@ -41,5 +41,3 @@ const parse = (text: string, matches: number[][]) => {
 
   return result;
 };
-
-export default parse;

@@ -25,7 +25,7 @@ const extend = (subject: Subject, baseObject: Subject) => {
   return baseObjectBuf;
 };
 
-const match = (text: string, query: string, options?: Subject) => {
+export const match = (text: string, query: string, options?: Subject) => {
   const extendedOptions = extend(options || ({} as Subject), {
     insideWords: false,
     findAllOccurrences: false,
@@ -90,5 +90,3 @@ const match = (text: string, query: string, options?: Subject) => {
       return match1[0] - match2[0];
     });
 };
-
-export default match;

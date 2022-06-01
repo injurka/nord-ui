@@ -28,6 +28,13 @@ export default [
       }
     ],
     plugins: [
+      external(),
+      resolve(),
+      commonjs(),
+      typescript({
+        tsconfig: './tsconfig.json',
+        exclude: ['**/*.stories.tsx', './src/**/*.test.tsx', './src/__test__']
+      }),
       scss({
         output: true,
         failOnError: true,
@@ -41,18 +48,11 @@ export default [
           require('postcss-preset-env')
         ]
       }),
-      resolve(),
-      commonjs(),
-      typescript({
-        tsconfig: './tsconfig.json',
-        exclude: ['**/*.stories.tsx', '**/__tests__', '**/*.test.ts']
-      }),
       babel({
-        exclude: 'node_modules/**',
-        presets: ['@babel/preset-react']
+        presets: ['@babel/preset-react'],
+        exclude: ['node_modules/**', 'example/**', 'stories/**']
       }),
-      terser(),
-      external()
+      terser()
     ]
   },
   {

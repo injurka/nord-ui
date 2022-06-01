@@ -26,5 +26,5 @@
     }
   },
   "include": ["src", "stories"],
-  "exclude": ["./node_modules", "./dist", "./example", "./.storybook", "src/**/*.test.tsx"]
+  "exclude": ["./node_modules", "./dist", "./example", "./.storybook"]
 }

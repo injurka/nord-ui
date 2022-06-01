@@ -217,5 +217,6 @@ const optionsSecondary = [
   { value: 'Justine' }
 ];
 Secondary.args = {
-  options: optionsSecondary
+  options: optionsSecondary,
+  isFiltering: false
 };

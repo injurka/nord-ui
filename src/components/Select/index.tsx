@@ -18,6 +18,8 @@ export interface SelectOption {
 export interface SelectProps {
   options: SelectOption[];
   noOptionsText?: string;
+  isFiltering?: boolean;
+  isHighlighted?: boolean;
   loading?: boolean;
   loadingText?: string;
   inputSettings?: { placeholder?: string };
@@ -33,6 +35,8 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
       noOptionsText = 'Nothings',
       loading = false,
       loadingText = 'loading',
+      isHighlighted = true,
+      isFiltering = true,
       inputSettings
     },
     ref
@@ -42,10 +46,11 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
       filteredOptions,
       isOpen,
       setIsOpen,
-      handleKeyPress,
+      hovered,
+      selected,
       handleChangeOption,
       handleClickOption
-    } = useSelect(options);
+    } = useSelect(options, isFiltering);
 
     const refWrapper = createRef<HTMLInputElement>();
     useOutsideClick(
@@ -58,28 +63,53 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
     );
 
     return (
-      <div ref={ref} className={cn('select', { open: isOpen })}>
+      <div ref={ref} className="select">
         <div ref={refWrapper} className="select__wrapper">
-          <div className="select-content">
-            <input
-              value={value}
-              onChange={handleChangeOption}
-              placeholder={inputSettings?.placeholder}
-              className="select-content__input"
-              onClick={() => setIsOpen(true)}
-            />
+          <div className={cn('select-content', { open: isOpen })}>
+            <div className="select-selector">
+              <input
+                value={value}
+                onChange={handleChangeOption}
+                placeholder={!selected ? inputSettings?.placeholder : ''}
+                className="select-selector__input"
+                onClick={() => setIsOpen(true)}
+              />
+              {!value && (
+                <span className="select-selector__placeholder">
+                  {(selected as SelectOption)?.value}
+                </span>
+              )}
+            </div>
+            <div className={cn('select-chevron', { open: isOpen })}>
+              <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+                <path d="M12 14.7 6.7 9.4 7.4 8.675 12 13.275 16.6 8.675 17.3 9.4Z" />
+              </svg>
+            </div>
           </div>
           {isOpen ? (
-            <div role="listitem" onKeyPress={handleKeyPress} className="select-list">
+            <div className="select-list">
               <div className="select-list__wrapper">
-                {loading ? <div className="select-list__loading">{loadingText}</div> : null}
+                {loading ? (
+                  <div className="select-list__options">
+                    <div className="select-list__options option-item">
+                      <span className="option-item__loading">{loadingText}</span>
+                    </div>
+                  </div>
+                ) : null}
                 {filteredOptions.length === 0 && !loading ? (
-                  <div className="select-list__none-options">{noOptionsText}</div>
+                  <div className="select-list__options">
+                    <div className="select-list__options option-item">
+                      <span className="option-item__none">{noOptionsText}</span>
+                    </div>
+                  </div>
                 ) : null}
                 {filteredOptions.length >= 0 && !loading ? (
                   <Options
                     options={filteredOptions}
+                    hovered={hovered}
+                    selected={selected}
                     value={value}
+                    isHighlighted={isHighlighted}
                     handleClickOption={handleClickOption}
                   />
                 ) : null}
