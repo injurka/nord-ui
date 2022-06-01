@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Meta, Story } from '@storybook/react';
 import React from 'react';
 
@@ -225,7 +226,6 @@ Secondary.args = {
 };
 
 type UseStateSelectProps = Omit<SelectProps, 'option' | 'onChange'>;
-
 const TemplateUseState: Story<UseStateSelectProps> = ({ ...restProps }: UseStateSelectProps) => {
   const [option, setOption] = React.useState<any>([]);
 
@@ -252,5 +252,20 @@ const optionsThird = [
 ];
 Third.args = {
   options: optionsThird,
+  filterOption: false
+};
+
+export const Fourth = TemplateUseState.bind({});
+const optionsFourth = [
+  { value: 'Eula' },
+  { value: 'Debra' },
+  { value: 'Morales' },
+  { value: 'Alana' },
+  { value: 'Livingston' },
+  { value: 'Acevedo' },
+  { value: 'Mayo' }
+];
+Fourth.args = {
+  options: optionsFourth,
   filterOption: false
 };
