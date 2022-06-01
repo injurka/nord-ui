@@ -1,8 +1,8 @@
 import type { Meta, Story } from '@storybook/react';
 import React from 'react';
 
-import type { SelectProps } from '#/components/Select';
-import { Select } from '#/components/Select';
+import type { SelectProps } from '#/components/index';
+import { Select } from '#/components/index';
 
 const meta: Meta = {
   title: 'Select',
@@ -21,7 +21,9 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story<SelectProps> = (args) => <Select {...args} />;
+const Template: Story<SelectProps> = ({ option, onChange, ...restProps }: SelectProps) => {
+  return <Select {...restProps} />;
+};
 
 export const Primary = Template.bind({});
 const optionsPrimary = [
@@ -47,7 +49,8 @@ const optionsPrimary = [
   { value: 'Brittney' }
 ];
 Primary.args = {
-  options: optionsPrimary
+  options: optionsPrimary,
+  placeholder: 'input value'
 };
 
 export const Secondary = Template.bind({});
@@ -218,5 +221,36 @@ const optionsSecondary = [
 ];
 Secondary.args = {
   options: optionsSecondary,
-  isFiltering: false
+  filterOption: false
+};
+
+type UseStateSelectProps = Omit<SelectProps, 'option' | 'onChange'>;
+
+const TemplateUseState: Story<UseStateSelectProps> = ({ ...restProps }: UseStateSelectProps) => {
+  const [option, setOption] = React.useState<any>([]);
+
+  return (
+    <Select
+      option={option}
+      onChange={(v) => {
+        setOption(v);
+      }}
+      {...restProps}
+    />
+  );
+};
+
+export const Third = TemplateUseState.bind({});
+const optionsThird = [
+  { value: 'Eula' },
+  { value: 'Debra' },
+  { value: 'Morales' },
+  { value: 'Alana' },
+  { value: 'Livingston' },
+  { value: 'Acevedo' },
+  { value: 'Mayo' }
+];
+Third.args = {
+  options: optionsThird,
+  filterOption: false
 };

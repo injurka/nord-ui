@@ -1,19 +1,33 @@
 import type React from 'react';
+import type { RefObject } from 'react';
 import { useMemo, useState, useEffect } from 'react';
-import type { SelectOption } from '#C/Select';
+import type { Mode, OptionValue, SelectOption } from '#/components/Select/Select';
 import { useKeyDownListener } from '#/hooks/events';
 
-export const useSelect = (options: SelectOption[], isFiltering: boolean) => {
+export const useSelect = <T extends HTMLElement | null>(
+  refInput: RefObject<T>,
+  filterOption: boolean,
+  options: SelectOption[],
+  option?: OptionValue,
+  onChangeOption?: (option: OptionValue) => void,
+  mode?: Mode
+) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [value, setValue] = useState<string>('');
-  const [selected, setSelected] = useState<SelectOption | SelectOption[] | null>(null);
   const [hovered, setHovered] = useState<number>(0);
+  const [selected, setSelected] = useState<OptionValue>(null);
+
+  const onChange = (newOption: OptionValue) => {
+    if (onChangeOption) onChangeOption(newOption);
+    else setSelected(newOption);
+  };
 
   const filteredOptions = useMemo(() => {
     setHovered(0);
-    if (!isFiltering) return options;
-    return options.filter((x) => x.value.toLowerCase().includes(value.toLowerCase(), 0));
-  }, [value, options]);
+    if (!filterOption) return options;
+    return options;
+    // return options.filter((x) => x.value.toLowerCase().includes(value.toLowerCase(), 0));
+  }, [filterOption, options]);
 
   useKeyDownListener(({ key }) => {
     if (!isOpen) return;
@@ -23,30 +37,32 @@ export const useSelect = (options: SelectOption[], isFiltering: boolean) => {
     }
     if (key === 'ArrowUp' && hovered !== 0) setHovered(hovered - 1);
     if (key === 'Enter') {
-      setSelected(filteredOptions[hovered]);
+      refInput.current?.blur();
+      onChange(filteredOptions[hovered]);
       setValue(filteredOptions[hovered].value);
       setIsOpen(false);
     }
-  });
-
-  useEffect(() => {
-    if (!isOpen) {
-      setValue('');
+    if (key === 'Escape') {
+      setIsOpen(false);
     }
-  }, [isOpen]);
+  });
 
   const handleChangeOption = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
 
-  const handleClickOption = (option: SelectOption) => () => {
-    setSelected(option);
-    setValue(option.value);
+  const handleClickOption = (newOption: SelectOption) => () => {
+    onChange(newOption);
+    setValue(newOption.value);
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    if (!isOpen) setValue('');
+  }, [isOpen]);
+
   return {
-    selected,
+    selected: option || selected,
     hovered,
     value,
     filteredOptions,

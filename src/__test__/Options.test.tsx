@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import type { SelectProps } from '#/components/Select';
-import { Select } from '#/components/Select';
+import type { SelectProps } from '#/components/Select/Select';
+import { Select } from '#/components/Select/Select';
 
 describe('Test Component', () => {
   const props: SelectProps = {

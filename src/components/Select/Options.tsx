@@ -1,7 +1,7 @@
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import React from 'react';
 import cn from 'classnames';
-import type { SelectOption } from '.';
+import type { SelectOption } from './Select';
 import { parse, match } from '#/utils';
 
 interface OptionProps {
@@ -27,7 +27,7 @@ export const Options: React.FC<OptionProps> = ({
         return (
           <CSSTransition
             key={option.value}
-            timeout={100}
+            timeout={150}
             classNames="select-list__options-transition"
             unmountOnExit
             mountOnEnter>

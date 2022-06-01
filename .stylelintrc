@@ -1,5 +1,9 @@
 {
-  "extends": ["stylelint-config-standard-scss", "stylelint-config-prettier", "stylelint-config-recess-order"],
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-config-prettier",
+    "stylelint-config-recess-order"
+  ],
   "plugins": ["stylelint-order"],
   "rules": {
     "order/order": ["custom-properties", "declarations"],
@@ -7,6 +11,8 @@
     "selector-id-pattern": null,
     "no-descending-specificity": null,
     "scss/double-slash-comment-whitespace-inside": null,
-    "scss/comment-no-empty": null
+    "scss/comment-no-empty": null,
+    "rule-empty-line-before": null,
+    "declaration-empty-line-before": null
   }
 }

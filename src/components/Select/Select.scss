@@ -1,4 +1,5 @@
 @use 'sass:color';
+@use 'sass:math';
 
 $background: #eee;
 $background-hover: #ddd;
@@ -10,10 +11,13 @@ $color-highlight: #7e7af5;
 $color: #353535;
 $select-content-height: 35px;
 $select-width: 500px;
+$spinner: #7ab3dd;
+$size: 30px;
 
 .select {
   position: relative;
   max-width: $select-width;
+  user-select: none;
 }
 
 .select-content {
@@ -44,6 +48,30 @@ $select-width: 500px;
   }
 }
 
+.select-selector {
+  width: 100%;
+  height: 100%;
+  padding-left: 15px;
+
+  &__placeholder {
+    height: 100%;
+    line-height: 35px;
+  }
+
+  &__input {
+    position: absolute;
+    width: calc(100% - 15px);
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    color: $color;
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+  }
+}
+
 .select-chevron {
   position: absolute;
   top: 0;
@@ -66,30 +94,6 @@ $select-width: 500px;
   }
 }
 
-.select-selector {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  padding-left: 15px;
-
-  &__placeholder {
-    height: 100%;
-    line-height: 33px;
-  }
-
-  &__input {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    color: $color;
-    background-color: transparent;
-    border: none;
-    border-radius: 5px;
-    outline: none;
-  }
-}
-
 .select-list {
   position: absolute;
   top: calc($select-content-height + 5px);
@@ -109,7 +113,7 @@ $select-width: 500px;
     background-color: $background;
 
     &::-webkit-scrollbar {
-      width: 6px;
+      width: 4px;
       height: 100%;
       background-color: transparent;
     }
@@ -147,6 +151,7 @@ $select-width: 500px;
 
   &__options {
     .option-item {
+      height: 100%;
       padding: 5px 10px;
       list-style-type: none;
       cursor: pointer;
@@ -161,6 +166,11 @@ $select-width: 500px;
         }
       }
 
+      &__loading {
+        position: relative;
+        height: 50px;
+      }
+
       &:hover {
         background-color: $background-hover;
       }
@@ -173,5 +183,52 @@ $select-width: 500px;
         background-color: $background-highlight;
       }
     }
+  }
+}
+
+.spinner {
+  position: absolute;
+  top: calc(50% - math.div($size, 2));
+  left: calc(50% - math.div($size, 2));
+  width: $size;
+  height: $size;
+  animation: spinner 0.75s linear infinite;
+
+  span {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+
+  .spinner-inner-1 {
+    background: linear-gradient(
+      to right,
+      rgba($spinner, 0) 0%,
+      rgba($spinner, 0) 50%,
+      $spinner 51%
+    );
+  }
+
+  .spinner-inner-2 {
+    background: linear-gradient(to top, rgba($background, 0) 0%, $background 100%);
+  }
+
+  .spinner-inner-3 {
+    $offset: $size * 0.1;
+    top: $offset;
+    left: $offset;
+    width: $size - ($offset * 2);
+    height: $size - ($offset * 2);
+    background: $background;
+  }
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
