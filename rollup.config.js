@@ -17,6 +17,11 @@ export default [
     input: './src/index.ts',
     output: [
       {
+        file: packageJson.min,
+        format: 'cjs',
+        plugins: [terser()]
+      },
+      {
         file: packageJson.main,
         format: 'cjs',
         sourcemap: true
@@ -29,7 +34,7 @@ export default [
     ],
     plugins: [
       external(),
-      resolve(),
+      resolve({ extensions: ['.js', '.ts', '.tsx'] }),
       commonjs(),
       typescript({
         tsconfig: './tsconfig.json',
@@ -41,18 +46,15 @@ export default [
         outputStyle: 'compressed'
       }),
       postcss({
-        plugins: [
-          require('cssnano'),
-          require('postcss-mixins'),
-          require('stylelint'),
-          require('postcss-preset-env')
-        ]
+        plugins: [require('cssnano'), require('postcss-mixins'), require('postcss-preset-env')]
       }),
       babel({
+        babelHelpers: 'bundled',
         presets: ['@babel/preset-react'],
-        exclude: ['node_modules/**', 'example/**', 'stories/**']
-      }),
-      terser()
+        include: ['src/**/*.ts', 'src/**/*.tsx'],
+        exclude: ['node_modules/**', 'example/**', 'stories/**'],
+        extensions: ['.js', '.ts', '.tsx']
+      })
     ]
   },
   {

@@ -1,7 +1,7 @@
 import type React from 'react';
 import type { RefObject } from 'react';
 import { useMemo, useState, useEffect } from 'react';
-import type { Mode, OptionValue, SelectOption } from '#/components/Select/Select';
+import type { Mode, OptionValue, SelectOption } from '#/components/select/Select';
 import { useKeyDownListener } from '#/hooks/events';
 
 export const useSelect = <T extends HTMLElement | null>(
@@ -9,7 +9,7 @@ export const useSelect = <T extends HTMLElement | null>(
   filterOption: boolean,
   options: SelectOption[],
   option?: OptionValue,
-  onChangeOption?: (option: OptionValue) => void,
+  onChange?: (option: OptionValue) => void,
   mode?: Mode
 ) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -17,8 +17,10 @@ export const useSelect = <T extends HTMLElement | null>(
   const [hovered, setHovered] = useState<number>(0);
   const [selected, setSelected] = useState<OptionValue>(null);
 
-  const onChange = (newOption: OptionValue) => {
-    if (onChangeOption) onChangeOption(newOption);
+  const isMutiply = useMemo(() => mode === 'multiple' || mode === 'tags', [mode]);
+
+  const onChangeOption = (newOption: OptionValue) => {
+    if (onChange) onChange(newOption);
     else setSelected(newOption);
   };
 
@@ -38,7 +40,7 @@ export const useSelect = <T extends HTMLElement | null>(
     if (key === 'ArrowUp' && hovered !== 0) setHovered(hovered - 1);
     if (key === 'Enter') {
       refInput.current?.blur();
-      onChange(filteredOptions[hovered]);
+      onChangeOption(filteredOptions[hovered]);
       setValue(filteredOptions[hovered].value);
       setIsOpen(false);
     }
@@ -52,7 +54,15 @@ export const useSelect = <T extends HTMLElement | null>(
   };
 
   const handleClickOption = (newOption: SelectOption) => () => {
-    onChange(newOption);
+    // console.log(' > ', newOption, option);
+
+    console.log(
+      'selected',
+      [...((option || []) as SelectOption[])],
+      [newOption, ...((option || []) as SelectOption[])]
+    );
+
+    onChangeOption(isMutiply ? [newOption, ...((option || []) as SelectOption[])] : newOption);
     setValue(newOption.value);
     setIsOpen(false);
   };
@@ -62,6 +72,7 @@ export const useSelect = <T extends HTMLElement | null>(
   }, [isOpen]);
 
   return {
+    isMutiply,
     selected: option || selected,
     hovered,
     value,

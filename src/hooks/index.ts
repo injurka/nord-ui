@@ -1,1 +1,1 @@
-export { useSelect } from './Select';
+export { useSelect } from './select';
