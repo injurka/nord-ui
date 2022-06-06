@@ -19,11 +19,6 @@ export const useSelect = <T extends HTMLElement | null>(
 
   const isMutiply = useMemo(() => mode === 'multiple' || mode === 'tags', [mode]);
 
-  const onChangeOption = (newOption: OptionValue) => {
-    if (onChange) onChange(newOption);
-    else setSelected(newOption);
-  };
-
   const filteredOptions = useMemo(() => {
     setHovered(0);
     if (!filterOption) return options;
@@ -31,7 +26,41 @@ export const useSelect = <T extends HTMLElement | null>(
     // return options.filter((x) => x.value.toLowerCase().includes(value.toLowerCase(), 0));
   }, [filterOption, options]);
 
+  const onChangeOption = (newOption: OptionValue) => {
+    if (onChange) onChange(newOption);
+    else setSelected(newOption);
+  };
+
+  const handleChangeOption = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+  };
+
+  const handleRemoveOption = (targetOption: OptionValue) => {
+    onChangeOption(
+      isMutiply
+        ? [...((option as SelectOption[]) || []).filter((x) => x !== targetOption)]
+        : targetOption
+    );
+  };
+
+  const handleClickOption = (newOption: SelectOption) => {
+    if (isMutiply) {
+      if (((option || []) as SelectOption[]).find((x) => x === newOption)) {
+        handleRemoveOption(newOption);
+        setIsOpen(false);
+        return;
+      }
+
+      onChangeOption([newOption, ...((option || []) as SelectOption[])]);
+    } else onChangeOption(newOption);
+
+    onChangeOption(isMutiply ? [newOption, ...((option || []) as SelectOption[])] : newOption);
+    setValue(newOption.value);
+    setIsOpen(false);
+  };
+
   useKeyDownListener(({ key }) => {
+    if (!isOpen && key === 'Enter') setIsOpen(true);
     if (!isOpen) return;
 
     if (key === 'ArrowDown' && filteredOptions.length - 1 !== hovered) {
@@ -40,32 +69,12 @@ export const useSelect = <T extends HTMLElement | null>(
     if (key === 'ArrowUp' && hovered !== 0) setHovered(hovered - 1);
     if (key === 'Enter') {
       refInput.current?.blur();
-      onChangeOption(filteredOptions[hovered]);
-      setValue(filteredOptions[hovered].value);
-      setIsOpen(false);
+      handleClickOption(filteredOptions[hovered]);
     }
     if (key === 'Escape') {
       setIsOpen(false);
     }
   });
-
-  const handleChangeOption = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-  };
-
-  const handleClickOption = (newOption: SelectOption) => () => {
-    // console.log(' > ', newOption, option);
-
-    console.log(
-      'selected',
-      [...((option || []) as SelectOption[])],
-      [newOption, ...((option || []) as SelectOption[])]
-    );
-
-    onChangeOption(isMutiply ? [newOption, ...((option || []) as SelectOption[])] : newOption);
-    setValue(newOption.value);
-    setIsOpen(false);
-  };
 
   useEffect(() => {
     if (!isOpen) setValue('');
@@ -79,6 +88,7 @@ export const useSelect = <T extends HTMLElement | null>(
     filteredOptions,
     isOpen,
     setIsOpen,
+    handleRemoveOption,
     handleClickOption,
     handleChangeOption
   };

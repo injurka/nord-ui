@@ -90,10 +90,12 @@ $spinner-size: 30px;
         display: flex;
         flex-flow: row nowrap;
         height: 100%;
+        padding-right: 5px;
         color: $color;
 
         background-color: $background-item;
         border: 1px solid $border-item;
+        border-radius: 15px;
 
         > :first-child {
           padding: 0 10px;

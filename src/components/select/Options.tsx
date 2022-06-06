@@ -5,6 +5,7 @@ import type { SelectOption } from './Select';
 import { parse, match } from '#/utils';
 
 interface OptionProps {
+  isMutiply: boolean;
   isHighlighted: boolean;
   options: SelectOption[];
   hovered: number;
@@ -14,6 +15,7 @@ interface OptionProps {
 }
 
 export const Options: React.FC<OptionProps> = ({
+  isMutiply,
   isHighlighted,
   value,
   hovered,
@@ -34,9 +36,11 @@ export const Options: React.FC<OptionProps> = ({
             <li
               className={cn('select-list__options option-item', {
                 hovered: key === hovered,
-                selected: selected === option
+                selected: isMutiply
+                  ? ((selected || []) as SelectOption[]).find((x) => x === option)
+                  : selected === option
               })}
-              onClick={handleClickOption(option)}>
+              onClick={() => handleClickOption(option)}>
               {isHighlighted ? (
                 parse(option.value, match(option.value, value)).map((part) => (
                   <span

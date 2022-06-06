@@ -58,20 +58,18 @@ export const Select = forwardRef((props: SelectProps, ref: React.Ref<HTMLDivElem
     setIsOpen,
     hovered,
     selected,
+    isMutiply,
+    handleRemoveOption,
     handleChangeOption,
-    handleClickOption,
-    isMutiply
+    handleClickOption
   } = useSelect(refInput, filterOption, options, option, onChange, mode);
 
   useOutsideClick(wrapperRef, () => setIsOpen(false), 'mousedown');
-
-  console.log('>', selected);
 
   return (
     <div ref={ref} className="select">
       <div ref={wrapperRef} className="select__wrapper">
         <div
-          data-status="a"
           onClick={() => {
             setIsOpen(true);
             refInput.current?.focus();
@@ -99,7 +97,13 @@ export const Select = forwardRef((props: SelectProps, ref: React.Ref<HTMLDivElem
               <div className="select-selector__overflow overflow-content">
                 {(selected as SelectOption[]).map((val) => {
                   return (
-                    <div key={val.value} className="overflow-content__item">
+                    <div
+                      onClick={(e) => {
+                        handleRemoveOption(val);
+                        e.stopPropagation();
+                      }}
+                      key={val.value}
+                      className="overflow-content__item">
                       <div className="overflow-content__wrapper">
                         <span>{val.value}</span>
                         <span>
@@ -155,11 +159,12 @@ export const Select = forwardRef((props: SelectProps, ref: React.Ref<HTMLDivElem
               ) : null}
               {filteredOptions.length >= 0 && !loading ? (
                 <Options
+                  isMutiply={isMutiply}
+                  isHighlighted={isHighlighted}
                   options={filteredOptions}
                   hovered={hovered}
                   selected={selected}
                   value={value}
-                  isHighlighted={isHighlighted}
                   handleClickOption={handleClickOption}
                 />
               ) : null}
