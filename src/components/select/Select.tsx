@@ -16,6 +16,7 @@ export type Mode = 'single' | 'multiple' | 'tags';
 export type OptionValue = SelectOption | SelectOption[] | null;
 
 export interface SelectOption {
+  label?: string;
   value: SelectValue;
 }
 
@@ -23,6 +24,7 @@ export interface SelectProps {
   mode?: Mode;
   option?: OptionValue;
   onChange?: (option: OptionValue) => void;
+  onSearch?: (value: SelectValue) => void;
   options: SelectOption[];
   noOptionsContent?: React.ReactNode;
   filterOption?: boolean;
@@ -37,6 +39,7 @@ export const Select = forwardRef((props: SelectProps, ref: React.Ref<HTMLDivElem
   const {
     option,
     onChange,
+    onSearch,
     mode = 'single',
     options,
     noOptionsContent = <span>Not found</span>,
@@ -62,7 +65,7 @@ export const Select = forwardRef((props: SelectProps, ref: React.Ref<HTMLDivElem
     handleRemoveOption,
     handleChangeOption,
     handleClickOption
-  } = useSelect(refInput, filterOption, options, option, onChange, mode);
+  } = useSelect(refInput, filterOption, options, option, onChange, onSearch, mode);
 
   useOutsideClick(wrapperRef, () => setIsOpen(false), 'mousedown');
 
@@ -121,7 +124,7 @@ export const Select = forwardRef((props: SelectProps, ref: React.Ref<HTMLDivElem
                     autoFocus={focusable}
                     value={value}
                     onChange={handleChangeOption}
-                    placeholder={!selected ? placeholder : ''}
+                    placeholder={placeholder || ''}
                     className="overflow-content__input"
                   />
                 </div>
@@ -129,6 +132,9 @@ export const Select = forwardRef((props: SelectProps, ref: React.Ref<HTMLDivElem
             )}
           </div>
           <div className={cn('select-chevron', { open: isOpen })}>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+              <path d="M12 14.7 6.7 9.4 7.4 8.675 12 13.275 16.6 8.675 17.3 9.4Z" />
+            </svg>
             <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
               <path d="M12 14.7 6.7 9.4 7.4 8.675 12 13.275 16.6 8.675 17.3 9.4Z" />
             </svg>

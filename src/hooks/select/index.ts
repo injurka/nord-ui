@@ -10,6 +10,7 @@ export const useSelect = <T extends HTMLElement | null>(
   options: SelectOption[],
   option?: OptionValue,
   onChange?: (option: OptionValue) => void,
+  onSearch?: (value: string) => void,
   mode?: Mode
 ) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -22,9 +23,8 @@ export const useSelect = <T extends HTMLElement | null>(
   const filteredOptions = useMemo(() => {
     setHovered(0);
     if (!filterOption) return options;
-    return options;
-    // return options.filter((x) => x.value.toLowerCase().includes(value.toLowerCase(), 0));
-  }, [filterOption, options]);
+    return options.filter((x) => x.value.toLowerCase().includes(value.toLowerCase(), 0));
+  }, [filterOption, options, value]);
 
   const onChangeOption = (newOption: OptionValue) => {
     if (onChange) onChange(newOption);
@@ -32,6 +32,7 @@ export const useSelect = <T extends HTMLElement | null>(
   };
 
   const handleChangeOption = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (onSearch) onSearch(e.target.value);
     setValue(e.target.value);
   };
 

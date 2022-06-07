@@ -1,7 +1,7 @@
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import React from 'react';
 import cn from 'classnames';
-import type { SelectOption } from './Select';
+import type { OptionValue, SelectOption } from './Select';
 import { parse, match } from '#/utils';
 
 interface OptionProps {
@@ -9,9 +9,9 @@ interface OptionProps {
   isHighlighted: boolean;
   options: SelectOption[];
   hovered: number;
-  selected: SelectOption | SelectOption[] | null;
+  selected: OptionValue;
   value: string;
-  handleClickOption: (option: SelectOption) => () => void;
+  handleClickOption: (option: SelectOption) => void;
 }
 
 export const Options: React.FC<OptionProps> = ({

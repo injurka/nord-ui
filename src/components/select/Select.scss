@@ -5,7 +5,7 @@ $background: #eee;
 $background-item: #cecece;
 $border-item: #dcdcdc;
 $color-remove: #858585;
-$chevron-width: 35px;
+$chevron-width: 60px;
 $background-hover: #ddd;
 $background-highlight: #c7e6f9;
 $box-shadow: 0 0 15px rgb(0 0 0 / 15%);
@@ -84,6 +84,7 @@ $spinner-size: 30px;
     display: flex;
     flex-flow: row wrap;
     padding: 3px;
+    overflow: hidden;
 
     .overflow-content {
       &__wrapper {
@@ -128,12 +129,12 @@ $spinner-size: 30px;
         &:last-child {
           flex-grow: 1;
           width: 0;
+          min-width: 50px;
         }
       }
 
       &__input {
         width: 100%;
-        min-width: 30px;
         background-color: transparent;
         border: none;
         outline: none;
