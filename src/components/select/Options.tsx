@@ -4,16 +4,18 @@ import cn from 'classnames';
 import type { OptionValue, SelectOption } from './Select';
 import { parse, match } from '#/utils';
 
+//* - INTERFACE ------------------------------------------------------------------------- *//
 interface OptionProps {
   isMutiply: boolean;
   isHighlighted: boolean;
   options: SelectOption[];
   hovered: number;
   selected: OptionValue;
-  value: string;
+  value: string | number;
   handleClickOption: (option: SelectOption) => void;
 }
 
+//* - COMPONENT ------------------------------------------------------------------------- *//
 export const Options: React.FC<OptionProps> = ({
   isMutiply,
   isHighlighted,

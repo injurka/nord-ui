@@ -1,0 +1,56 @@
+@use 'sass:color';
+@use 'sass:math';
+
+$background: #252525;
+$background-item: #cecece;
+$border-item: #dcdcdc;
+$color-remove: #858585;
+$chevron-width: 60px;
+$background-hover: #ddd;
+$background-highlight: #c7e6f9;
+$box-shadow: 0 0 15px rgb(0 0 0 / 15%);
+$border-active-input: #7ab3dd;
+$border-input: #cecece;
+$color-highlight: #7e7af5;
+$color: #353535;
+$select-content-height: 35px;
+$select-width: 500px;
+$spinner: #7ab3dd;
+$spinner-size: 30px;
+
+.select,
+.custom {
+  position: relative;
+  max-width: $select-width;
+  height: 100%;
+  user-select: none;
+}
+
+.select-content,
+.custom {
+  width: 100%;
+  min-height: $select-content-height;
+  overflow: hidden;
+  background-color: $background;
+  border: 1px solid $border-input;
+  border-radius: 5px;
+
+  &__placeholder {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    text-align: center;
+    transition: color 0.5s ease-out;
+  }
+
+  &.open {
+    border: 1px solid $border-active-input;
+
+    .select-selector {
+      &__placeholder {
+        color: color.adjust($color, $lightness: 25%);
+        transition: color 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+      }
+    }
+  }
+}

@@ -8,9 +8,10 @@
 import type { Meta, Story } from '@storybook/react';
 import React from 'react';
 
-import type { SelectProps } from '#/components';
+import type { SelectOption, SelectProps } from '#/components';
 import { Select } from '#/components';
 import debounce from '#/utils/debounce';
+import type { OptionValue } from '#/components/select/Select';
 
 // type StoriesProps = Omit<SelectProps, 'onChange' | 'onSearch'>;
 
@@ -31,12 +32,19 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story<SelectProps> = ({ option, onChange, ...restProps }: SelectProps) => {
-  return <Select {...restProps} />;
+type SelectValue = string; // ...or another types
+type StorySelectProps = SelectProps<SelectOption<SelectValue>>;
+
+//* - Single / Multiple Template ---------------------------------------------------------------- *//
+const Template: Story<StorySelectProps> = ({ ...restProps }) => {
+  const [option, setOption] = React.useState<OptionValue>(null);
+
+  return <Select {...restProps} option={option} onChange={(v) => setOption(v)} />;
 };
 
+//* - Single ---------------------------------------------------------------- *//
 export const Single = Template.bind({});
-const optionsPrimary = [
+const optionsSingle = [
   { value: 'Livingston' },
   { value: 'Acevedo' },
   { value: 'Mayo' },
@@ -64,51 +72,33 @@ const optionsPrimary = [
   { value: 'Brittney' }
 ];
 Single.args = {
-  options: optionsPrimary,
+  options: optionsSingle,
   placeholder: 'input value'
 };
 
-const TemplateUseState: Story<SelectProps> = ({ ...props }: SelectProps) => {
-  const [option, setOption] = React.useState<any>([]);
-
-  return <Select {...props} option={option} onChange={(v) => setOption(v)} />;
-};
-
-export const CustomState = TemplateUseState.bind({});
-const optionsThird = [
+//* - Multiple ---------------------------------------------------------------- *//
+export const Multiple = Template.bind({});
+const optionsMultiple = [
   { value: 'Eula' },
   { value: 'Debra' },
   { value: 'Morales' },
   { value: 'Alana' },
   { value: 'Livingston' },
   { value: 'Acevedo' },
-  { value: 'Mayo' }
-];
-CustomState.args = {
-  mode: 'single',
-  options: optionsThird,
-  filterOption: false
-};
-
-export const Multiple = TemplateUseState.bind({});
-const optionsFourth = [
-  { value: 'Eula' },
-  { value: 'Debra' },
+  { value: 'Mayo' },
   { value: 'Morales' },
   { value: 'Alana' },
   { value: 'Livingston' },
-  { value: 'Acevedo' },
-  { value: 'Mayo' }
+  { value: 'Acevedo' }
 ];
 Multiple.args = {
   mode: 'multiple',
-  options: optionsFourth,
+  options: optionsMultiple,
   filterOption: true
 };
 
-//* - TemplateFetch ---------------------------------------------------------------- *//
-
-interface DebounceSelectProps extends SelectProps {
+//* - Fetch Template ---------------------------------------------------------------- *//
+interface DebounceSelectProps extends StorySelectProps {
   fetchOptions: (username: string) => Promise<any>;
   debounceTimeout: number;
 }
@@ -158,20 +148,18 @@ async function fetchUserList(username: string) {
     );
 }
 
-const TemplateFetch: Story<SelectProps> = ({ ...props }: SelectProps) => {
-  const [option, setOption] = React.useState<any>([]);
+const TemplateFetch: Story<StorySelectProps> = ({ ...restProps }) => {
+  const [option, setOption] = React.useState<OptionValue>(null);
 
   return (
     <DebounceSelect
-      {...props}
+      {...restProps}
       debounceTimeout={500}
       fetchOptions={fetchUserList}
       option={option}
       onChange={(v) => setOption(v)}
     />
   );
-
-  // return <Select {...props} option={option} onChange={(v) => setOption(v)} />;
 };
 
 export const MultipleFetch = TemplateFetch.bind({});
@@ -179,4 +167,22 @@ MultipleFetch.args = {
   placeholder: 'Select users',
   mode: 'multiple',
   filterOption: false
+};
+
+//* - Custom theme Template ---------------------------------------------------------------- *//
+// eslint-disable-next-line import/first
+import './assets/SelectDark.scss';
+
+const TemplateCustomTheme: Story<StorySelectProps> = ({ ...restProps }) => {
+  const [option, setOption] = React.useState<OptionValue>(null);
+
+  return <Select {...restProps} option={option} onChange={(v) => setOption(v)} />;
+};
+
+export const CustomTheme = TemplateCustomTheme.bind({});
+CustomTheme.args = {
+  placeholder: 'Select users',
+  mode: 'multiple',
+  filterOption: false,
+  cln: 'custom'
 };

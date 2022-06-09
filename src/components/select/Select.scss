@@ -256,7 +256,7 @@ $spinner-size: 30px;
   }
 }
 
-.spinner {
+.select-spinner {
   position: absolute;
   top: calc(50% - math.div($spinner-size, 2));
   left: calc(50% - math.div($spinner-size, 2));

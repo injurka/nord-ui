@@ -16,5 +16,4 @@ pnpm-lock.yaml
 ./example/pnpm-lock.yaml
 
 # story
-.storybook
 storybook-static

@@ -1,35 +1,34 @@
 import type React from 'react';
 import type { RefObject } from 'react';
 import { useMemo, useState, useEffect } from 'react';
-import type { Mode, OptionValue, SelectOption } from '#/components/select/Select';
+import type { Mode, OptionValue, SelectOption, SelectValue } from '#/components/select/Select';
 import { useKeyDownListener } from '#/hooks/events';
 
+//* - USE SELECT HOOK ------------------------------------------------------------------------- *//
 export const useSelect = <T extends HTMLElement | null>(
   refInput: RefObject<T>,
   filterOption: boolean,
   options: SelectOption[],
-  option?: OptionValue,
-  onChange?: (option: OptionValue) => void,
-  onSearch?: (value: string) => void,
+  option: OptionValue,
+  onChange: (option: OptionValue) => void,
+  onSearch?: (value: SelectValue) => void,
   mode?: Mode
 ) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [value, setValue] = useState<string>('');
+  const [value, setValue] = useState<SelectValue>('');
   const [hovered, setHovered] = useState<number>(0);
-  const [selected, setSelected] = useState<OptionValue>(null);
 
   const isMutiply = useMemo(() => mode === 'multiple' || mode === 'tags', [mode]);
 
   const filteredOptions = useMemo(() => {
     setHovered(0);
     if (!filterOption) return options;
-    return options.filter((x) => x.value.toLowerCase().includes(value.toLowerCase(), 0));
+    return options.filter((x) =>
+      x.value.toString().toLowerCase().includes(value.toString().toLowerCase(), 0)
+    );
   }, [filterOption, options, value]);
 
-  const onChangeOption = (newOption: OptionValue) => {
-    if (onChange) onChange(newOption);
-    else setSelected(newOption);
-  };
+  const onChangeOption = (newOption: OptionValue) => onChange(newOption);
 
   const handleChangeOption = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onSearch) onSearch(e.target.value);
@@ -62,7 +61,7 @@ export const useSelect = <T extends HTMLElement | null>(
 
   useKeyDownListener(({ key }) => {
     if (!isOpen && key === 'Enter') setIsOpen(true);
-    if (!isOpen) return;
+    if (!isOpen || !filteredOptions?.length) return;
 
     if (key === 'ArrowDown' && filteredOptions.length - 1 !== hovered) {
       setHovered(hovered + 1);
@@ -83,7 +82,7 @@ export const useSelect = <T extends HTMLElement | null>(
 
   return {
     isMutiply,
-    selected: option || selected,
+    selected: option,
     hovered,
     value,
     filteredOptions,
