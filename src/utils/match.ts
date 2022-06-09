@@ -25,18 +25,20 @@ const extend = (subject: Subject, baseObject: Subject) => {
   return baseObjectBuf;
 };
 
-export const match = (text: string, query: string, options?: Subject) => {
+export const match = (text: string | number, query: string | number, options?: Subject) => {
+  const value = text.toString();
+
   const extendedOptions = extend(options || ({} as Subject), {
     insideWords: false,
     findAllOccurrences: false,
     requireMatchAll: false
   });
 
-  const cleanedTextArray = Array.from(text).map((x) =>
+  const cleanedTextArray = Array.from(value).map((x) =>
     x.normalize('NFD').replace(removeDiacritics, '')
   );
   let cleanedText = cleanedTextArray.join('');
-  const cleanedQuery = query.normalize('NFD').replace(removeDiacritics, '');
+  const cleanedQuery = query.toString().normalize('NFD').replace(removeDiacritics, '');
 
   return cleanedQuery
     .trim()

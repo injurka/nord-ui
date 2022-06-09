@@ -1,14 +1,15 @@
-export const parse = (text: string, matches: number[][]) => {
+export const parse = (text: string | number, matches: number[][]) => {
+  const value = text.toString();
   const result = [];
 
   if (matches.length === 0) {
     result.push({
-      text,
+      text: value,
       highlight: false
     });
   } else if (matches[0][0] > 0) {
     result.push({
-      text: text.slice(0, matches[0][0]),
+      text: value.slice(0, matches[0][0]),
       highlight: false
     });
   }
@@ -20,20 +21,20 @@ export const parse = (text: string, matches: number[][]) => {
     const endIndex = match[1];
 
     result.push({
-      text: text.slice(startIndex, endIndex),
+      text: value.slice(startIndex, endIndex),
       highlight: true
     });
 
     if (i === matches.length - 1) {
-      if (endIndex < text.length) {
+      if (endIndex < value.length) {
         result.push({
-          text: text.slice(endIndex, text.length),
+          text: value.slice(endIndex, value.length),
           highlight: false
         });
       }
     } else if (endIndex < matches[i + 1][0]) {
       result.push({
-        text: text.slice(endIndex, matches[i + 1][0]),
+        text: value.slice(endIndex, matches[i + 1][0]),
         highlight: false
       });
     }

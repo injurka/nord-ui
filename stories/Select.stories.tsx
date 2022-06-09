@@ -1,10 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Meta, Story } from '@storybook/react';
 import React from 'react';
 
@@ -12,8 +5,7 @@ import type { SelectOption, SelectProps } from '#/components';
 import { Select } from '#/components';
 import debounce from '#/utils/debounce';
 import type { OptionValue } from '#/components/select/Select';
-
-// type StoriesProps = Omit<SelectProps, 'onChange' | 'onSearch'>;
+import type { ResponseFetch } from './types';
 
 const meta: Meta = {
   title: 'Select',
@@ -34,17 +26,7 @@ export default meta;
 
 type SelectValue = string; // ...or another types
 type StorySelectProps = SelectProps<SelectOption<SelectValue>>;
-
-//* - Single / Multiple Template ---------------------------------------------------------------- *//
-const Template: Story<StorySelectProps> = ({ ...restProps }) => {
-  const [option, setOption] = React.useState<OptionValue>(null);
-
-  return <Select {...restProps} option={option} onChange={(v) => setOption(v)} />;
-};
-
-//* - Single ---------------------------------------------------------------- *//
-export const Single = Template.bind({});
-const optionsSingle = [
+const options = [
   { value: 'Livingston' },
   { value: 'Acevedo' },
   { value: 'Mayo' },
@@ -71,29 +53,27 @@ const optionsSingle = [
   { value: 'Kris' },
   { value: 'Brittney' }
 ];
+
+//* - Single / Multiple Template ---------------------------------------------------------------- *//
+const Template: Story<StorySelectProps> = ({ ...restProps }) => {
+  const [option, setOption] = React.useState<OptionValue>(null);
+
+  return <Select {...restProps} option={option} onChange={(v) => setOption(v)} />;
+};
+
+//* - Single ---------------------------------------------------------------- *//
+export const Single = Template.bind({});
+
 Single.args = {
-  options: optionsSingle,
-  placeholder: 'input value'
+  options,
+  placeholder: 'Input value'
 };
 
 //* - Multiple ---------------------------------------------------------------- *//
 export const Multiple = Template.bind({});
-const optionsMultiple = [
-  { value: 'Eula' },
-  { value: 'Debra' },
-  { value: 'Morales' },
-  { value: 'Alana' },
-  { value: 'Livingston' },
-  { value: 'Acevedo' },
-  { value: 'Mayo' },
-  { value: 'Morales' },
-  { value: 'Alana' },
-  { value: 'Livingston' },
-  { value: 'Acevedo' }
-];
 Multiple.args = {
+  options,
   mode: 'multiple',
-  options: optionsMultiple,
   filterOption: true
 };
 
@@ -104,15 +84,15 @@ interface DebounceSelectProps extends StorySelectProps {
 }
 function DebounceSelect({ fetchOptions, debounceTimeout = 500, ...props }: DebounceSelectProps) {
   const [fetching, setFetching] = React.useState(false);
-  const [options, setOptions] = React.useState([]);
+  const [optionsFetched, setOptions] = React.useState([]);
   const fetchRef = React.useRef(0);
   const debounceFetcher = React.useMemo(() => {
-    const loadOptions = (value: string) => {
+    const loadOptions = (value: string | number) => {
       fetchRef.current += 1;
       const fetchId = fetchRef.current;
       setOptions([]);
       setFetching(true);
-      fetchOptions(value).then((newOptions) => {
+      fetchOptions(value.toString()).then((newOptions: []) => {
         if (fetchId !== fetchRef.current) {
           return;
         }
@@ -131,7 +111,7 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 500, ...props }: Debou
       loading={fetching}
       filterOption={false}
       onSearch={debounceFetcher}
-      options={options}
+      options={optionsFetched}
     />
   );
 }
@@ -140,8 +120,8 @@ async function fetchUserList(username: string) {
   console.log('fetching user', username);
   return fetch('https://randomuser.me/api/?results=5')
     .then((response) => response.json())
-    .then((body: any) =>
-      body.results.map((user: any) => ({
+    .then((body: ResponseFetch) =>
+      body.results.map((user) => ({
         label: `${user.name.first} ${user.name.last}`,
         value: user.login.username
       }))
@@ -181,8 +161,9 @@ const TemplateCustomTheme: Story<StorySelectProps> = ({ ...restProps }) => {
 
 export const CustomTheme = TemplateCustomTheme.bind({});
 CustomTheme.args = {
+  options,
   placeholder: 'Select users',
   mode: 'multiple',
-  filterOption: false,
+  filterOption: true,
   cln: 'custom'
 };

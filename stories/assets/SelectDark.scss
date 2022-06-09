@@ -1,56 +1,141 @@
 @use 'sass:color';
 @use 'sass:math';
 
-$background: #252525;
-$background-item: #cecece;
-$border-item: #dcdcdc;
-$color-remove: #858585;
+$background: #303030;
+$background-item: #404040;
+$border-item: #303030;
 $chevron-width: 60px;
-$background-hover: #ddd;
-$background-highlight: #c7e6f9;
+$color-remove: #ccc;
+$background-hover: #555;
+$background-highlight: #ff7c7c73;
 $box-shadow: 0 0 15px rgb(0 0 0 / 15%);
-$border-active-input: #7ab3dd;
+$border-active-input: #c8716c;
 $border-input: #cecece;
-$color-highlight: #7e7af5;
-$color: #353535;
+$color-highlight: #f5807a;
+$color: #dadada;
 $select-content-height: 35px;
 $select-width: 500px;
 $spinner: #7ab3dd;
 $spinner-size: 30px;
 
-.select,
 .custom {
-  position: relative;
-  max-width: $select-width;
-  height: 100%;
-  user-select: none;
-}
+  .select-content {
+    background-color: $background;
+    border: 1px solid $border-input;
 
-.select-content,
-.custom {
-  width: 100%;
-  min-height: $select-content-height;
-  overflow: hidden;
-  background-color: $background;
-  border: 1px solid $border-input;
-  border-radius: 5px;
+    &.open {
+      border: 1px solid $border-active-input;
 
-  &__placeholder {
-    position: absolute;
-    left: 0;
-    height: 100%;
-    text-align: center;
-    transition: color 0.5s ease-out;
+      .select-selector {
+        &__search {
+          .search-content {
+            &__placeholder {
+              color: color.adjust($color, $lightness: 25%);
+              transition: color 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+            }
+          }
+        }
+      }
+    }
   }
 
-  &.open {
-    border: 1px solid $border-active-input;
-
-    .select-selector {
-      &__placeholder {
-        color: color.adjust($color, $lightness: 25%);
-        transition: color 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+  .select-selector {
+    &__search {
+      .search-content {
+        &__input {
+          color: $color;
+        }
       }
+    }
+
+    &__overflow {
+      .overflow-content {
+        &__wrapper {
+          color: $color;
+          background-color: $background-item;
+          border: 1px solid $border-item;
+
+          > :last-child {
+            svg {
+              fill: $color-remove;
+            }
+          }
+        }
+        &__input {
+          color: $color;
+        }
+      }
+    }
+  }
+
+  .select-chevron {
+    > :first-child {
+      background-color: $background-item;
+      fill: $color;
+    }
+
+    > :last-child {
+      cursor: pointer;
+      fill: $color;
+    }
+  }
+
+  .select-list {
+    box-shadow: $box-shadow;
+
+    &__wrapper {
+      background-color: $background-item;
+
+      &::-webkit-scrollbar-thumb {
+        background-color: $color-highlight;
+        box-shadow: inset 0 0 5px $background-hover;
+      }
+    }
+
+    &__options {
+      .option-item {
+        &__text {
+          color: $color;
+          &_highlight {
+            color: $color-highlight;
+          }
+        }
+
+        &__none {
+          color: $color;
+        }
+
+        &:hover {
+          background-color: $background-hover;
+        }
+
+        &.hovered {
+          background-color: $background-hover;
+        }
+
+        &.selected {
+          background-color: $background-highlight;
+        }
+      }
+    }
+  }
+
+  .select-spinner {
+    .spinner-inner-1 {
+      background: linear-gradient(
+        to right,
+        rgba($spinner, 0) 0%,
+        rgba($spinner, 0) 50%,
+        $spinner 51%
+      );
+    }
+
+    .spinner-inner-2 {
+      background: linear-gradient(to top, rgba($background, 0) 0%, $background 100%);
+    }
+
+    .spinner-inner-3 {
+      background: $background;
     }
   }
 }

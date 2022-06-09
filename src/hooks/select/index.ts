@@ -35,6 +35,13 @@ export const useSelect = <T extends HTMLElement | null>(
     setValue(e.target.value);
   };
 
+  const handleClearOption = (e: React.MouseEvent<unknown>) => {
+    e.stopPropagation();
+    onChangeOption(null);
+    setValue('');
+    setIsOpen(false);
+  };
+
   const handleRemoveOption = (targetOption: OptionValue) => {
     onChangeOption(
       isMutiply
@@ -88,6 +95,7 @@ export const useSelect = <T extends HTMLElement | null>(
     filteredOptions,
     isOpen,
     setIsOpen,
+    handleClearOption,
     handleRemoveOption,
     handleClickOption,
     handleChangeOption

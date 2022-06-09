@@ -1,5 +1,4 @@
 import './Select.scss';
-// import './SelectDark.scss';
 
 import React, { createRef, useRef } from 'react';
 import cn from 'classnames';
@@ -66,6 +65,7 @@ const SelectInput = <T extends SelectOption>(
     hovered,
     selected,
     isMutiply,
+    handleClearOption,
     handleRemoveOption,
     handleChangeOption,
     handleClickOption
@@ -136,8 +136,12 @@ const SelectInput = <T extends SelectOption>(
             )}
           </div>
           <div className={cn('select-chevron', cln, { open: isOpen })}>
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-              <path d="M12 14.7 6.7 9.4 7.4 8.675 12 13.275 16.6 8.675 17.3 9.4Z" />
+            <svg
+              onClick={handleClearOption}
+              xmlns="http://www.w3.org/2000/svg"
+              height="20"
+              width="20">
+              <path d="M5.375 15.271 4.729 14.625 9.354 10 4.729 5.375 5.375 4.729 10 9.354 14.625 4.729 15.271 5.375 10.646 10 15.271 14.625 14.625 15.271 10 10.646Z" />
             </svg>
             <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
               <path d="M12 14.7 6.7 9.4 7.4 8.675 12 13.275 16.6 8.675 17.3 9.4Z" />
@@ -160,7 +164,7 @@ const SelectInput = <T extends SelectOption>(
                   </div>
                 </div>
               ) : null}
-              {filteredOptions?.length === 0 && !loading ? (
+              {filteredOptions?.length === 0 && !loading && value.toString().length > 0 ? (
                 <div className="select-list__options">
                   <div className="select-list__options option-item">
                     <div className="option-item__none">{noOptionsContent}</div>

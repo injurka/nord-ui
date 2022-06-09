@@ -38,7 +38,7 @@ export default [
       commonjs(),
       typescript({
         tsconfig: './tsconfig.json',
-        exclude: ['**/*.stories.tsx', './src/**/*.test.tsx', './src/__test__']
+        exclude: ['./stories/**/*', './src/**/*.test.tsx', './src/__test__']
       }),
       scss({
         output: true,
