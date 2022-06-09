@@ -4,7 +4,6 @@
 $background: #303030;
 $background-item: #404040;
 $border-item: #303030;
-$chevron-width: 60px;
 $color-remove: #ccc;
 $background-hover: #555;
 $background-highlight: #ff7c7c73;
@@ -13,16 +12,13 @@ $border-active-input: #c8716c;
 $border-input: #cecece;
 $color-highlight: #f5807a;
 $color: #dadada;
-$select-content-height: 35px;
-$select-width: 500px;
 $spinner: #7ab3dd;
-$spinner-size: 30px;
 
-.custom {
+.select-content.custom {
+  background-color: $background;
+  border: 1px solid $border-input;
+
   .select-content {
-    background-color: $background;
-    border: 1px solid $border-input;
-
     &.open {
       border: 1px solid $border-active-input;
 
@@ -38,7 +34,9 @@ $spinner-size: 30px;
       }
     }
   }
+}
 
+.select-selector.custom {
   .select-selector {
     &__search {
       .search-content {
@@ -67,22 +65,24 @@ $spinner-size: 30px;
       }
     }
   }
+}
 
-  .select-chevron {
-    > :first-child {
-      background-color: $background-item;
-      fill: $color;
-    }
-
-    > :last-child {
-      cursor: pointer;
-      fill: $color;
-    }
+.select-chevron.custom {
+  > :first-child {
+    background-color: $background-item;
+    fill: $color;
   }
 
-  .select-list {
-    box-shadow: $box-shadow;
+  > :last-child {
+    cursor: pointer;
+    fill: $color;
+  }
+}
 
+.select-list.custom {
+  box-shadow: $box-shadow;
+
+  .select-list {
     &__wrapper {
       background-color: $background-item;
 
@@ -119,7 +119,9 @@ $spinner-size: 30px;
       }
     }
   }
+}
 
+.select-spinner.custom {
   .select-spinner {
     .spinner-inner-1 {
       background: linear-gradient(

@@ -13,7 +13,7 @@ $border-active-input: #7ab3dd;
 $border-input: #cecece;
 $color-highlight: #7e7af5;
 $color: #353535;
-$select-content-height: 35px;
+$select-content-height: 38px;
 $select-width: 500px;
 $spinner: #7ab3dd;
 $spinner-size: 30px;
@@ -68,15 +68,16 @@ $spinner-size: 30px;
 
 .select-selector {
   max-width: calc(100% - $chevron-width);
-  height: 100%;
 
   &__search {
+    display: flex;
+    align-items: center;
+    min-height: $select-content-height;
     padding-left: 15px;
 
     .search-content {
       &__placeholder {
-        height: 100%;
-        line-height: 35px;
+        color: $color;
       }
 
       &__input {
@@ -148,6 +149,7 @@ $spinner-size: 30px;
 
       &__input {
         width: 100%;
+        text-overflow: ellipsis;
         background-color: transparent;
         border: none;
         outline: none;
